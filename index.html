@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LearnPy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar__brand">LearnPy Docs</div>
+        <nav class="sidebar__nav">
+          <a href="#" class="nav-item nav-item--active" data-md="docs/00-front-matter/foreword.md">Foreword</a>
+          <a href="#" class="nav-item" data-md="docs/00-front-matter/introduction.md">Introduction</a>
+
+          <details open>
+            <summary>1. Getting Started</summary>
+            <a href="#" class="nav-subitem" data-md="docs/01-getting-started/installation.md">1.1 Installation</a>
+            <a href="#" class="nav-subitem" data-md="docs/01-getting-started/hello-world.md">1.2 Hello, World!</a>
+            <a href="#" class="nav-subitem" data-md="docs/01-getting-started/first-project.md">1.3 Your First Project</a>
+          </details>
+
+          <details>
+            <summary>2. Core Concepts</summary>
+            <a href="#" class="nav-subitem" data-md="docs/02-core-concepts/variables.md">2.1 Variables</a>
+            <a href="#" class="nav-subitem" data-md="docs/02-core-concepts/data-types.md">2.2 Data Types</a>
+            <a href="#" class="nav-subitem" data-md="docs/02-core-concepts/functions.md">2.3 Functions</a>
+          </details>
+        </nav>
+      </aside>
+
+      <div class="main">
+        <header class="topbar">
+          <button id="menuBtn" class="icon-btn" aria-label="Toggle menu">☰</button>
+          <div class="topbar__title">LearnPy</div>
+          <div class="topbar__actions">
+            <button id="searchBtn" class="icon-btn" aria-label="Search">⌕</button>
+            <button id="repoBtn" class="icon-btn" aria-label="Repository">⌂</button>
+          </div>
+        </header>
+
+        <section id="searchPanel" class="search-panel" aria-hidden="true">
+          <div class="search-panel__head">
+            <input
+              id="globalSearchInput"
+              class="search-input"
+              type="search"
+              placeholder="Search all chapters..."
+              aria-label="Search all chapters"
+            />
+            <button id="searchCloseBtn" class="icon-btn" aria-label="Close search">✕</button>
+          </div>
+          <ul id="searchResults" class="search-results"></ul>
+        </section>
+
+        <section id="shortcutsModal" class="shortcuts-modal" aria-hidden="true" role="dialog" aria-label="Keyboard shortcuts">
+          <div class="shortcuts-modal__panel">
+            <div class="shortcuts-modal__head">
+              <h2>Keyboard Shortcuts</h2>
+              <button id="shortcutsCloseBtn" class="icon-btn" aria-label="Close keyboard shortcuts">✕</button>
+            </div>
+            <ul class="shortcuts-list">
+              <li><span>Next chapter</span><kbd>→</kbd></li>
+              <li><span>Previous chapter</span><kbd>←</kbd></li>
+              <li><span>Page down</span><kbd>Space</kbd></li>
+              <li><span>Page up</span><kbd>Shift + Space</kbd></li>
+              <li><span>Scroll down/up</span><kbd>↓ / ↑</kbd></li>
+              <li><span>Jump top/bottom</span><kbd>Home / End</kbd></li>
+              <li><span>Toggle search</span><kbd>F</kbd></li>
+              <li><span>Toggle shortcuts</span><kbd>?</kbd></li>
+            </ul>
+          </div>
+        </section>
+
+        <main class="content">
+          <article class="doc markdown-body" id="docBody">
+            <h1>Loading…</h1>
+          </article>
+        </main>
+      </div>
+    </div>
+
+    <button id="prevBtn" class="side-nav-btn side-nav-btn--left" aria-label="Previous chapter">‹</button>
+    <button id="nextBtn" class="side-nav-btn side-nav-btn--right" aria-label="Next chapter">›</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
