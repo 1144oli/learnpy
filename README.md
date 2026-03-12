@@ -16,7 +16,4 @@ Layout
   - `functions.md`
 
 
-new chapter
-1. Create a new numbered folder, for example `03-advanced-topics/`.
-2. Add Markdown files inside it.
-3. Add sidebar links in `index.html` with matching `data-md` paths.
+

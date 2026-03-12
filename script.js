@@ -29,12 +29,82 @@ function enhanceMarkdownLinks() {
     const href = anchor.getAttribute("href") || "";
     const isExternal = /^(https?:)?\/\//i.test(href);
 
-    if (!isExternal) {
+    if (isExternal) {
+      anchor.setAttribute("target", "_blank");
+      anchor.setAttribute("rel", "noopener noreferrer");
       return;
     }
 
-    anchor.setAttribute("target", "_blank");
-    anchor.setAttribute("rel", "noopener noreferrer");
+    // Intercept links to other .md files and navigate via the JS system
+    if (href.endsWith(".md")) {
+      anchor.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        // Resolve the path relative to the current chapter's folder
+        const activeLink = navLinks.find((l) =>
+          l.classList.contains("nav-item--active")
+        );
+        const currentPath = activeLink ? activeLink.dataset.md : "";
+        const currentDir = currentPath.substring(0, currentPath.lastIndexOf("/") + 1);
+        const resolved = currentDir + href;
+
+        // Find a matching sidebar link, if any, and activate it
+        const matchingLink = navLinks.find((l) => {
+          const lPath = l.dataset.md || "";
+          return lPath === resolved || lPath.endsWith("/" + href);
+        });
+
+        if (matchingLink) {
+          setActiveLink(matchingLink);
+          await renderMarkdown(matchingLink);
+        } else {
+          // No sidebar entry — fetch and render directly
+          const fakeLink = { dataset: { md: resolved }, textContent: href };
+          await renderMarkdown(fakeLink);
+        }
+      });
+    }
+  });
+}
+
+function enhanceCodeBlocks() {
+  const codeBlocks = Array.from(docBody.querySelectorAll("pre > code"));
+
+  codeBlocks.forEach((codeBlock) => {
+    const pre = codeBlock.parentElement;
+
+    if (!(pre instanceof HTMLElement) || pre.querySelector(".code-copy-btn")) {
+      return;
+    }
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "code-copy-btn";
+    button.textContent = "Copy";
+
+    button.addEventListener("click", async () => {
+      const codeText = codeBlock.textContent || "";
+
+      if (!codeText) {
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(codeText);
+        button.textContent = "Copied";
+        button.classList.add("is-success");
+      } catch (error) {
+        button.textContent = "Failed";
+        button.classList.add("is-error");
+      }
+
+      window.setTimeout(() => {
+        button.textContent = "Copy";
+        button.classList.remove("is-success", "is-error");
+      }, 1200);
+    });
+
+    pre.prepend(button);
   });
 }
 
@@ -60,6 +130,7 @@ async function renderMarkdown(link) {
     const markdown = await response.text();
     docBody.innerHTML = marked.parse(markdown);
     enhanceMarkdownLinks();
+    enhanceCodeBlocks();
     animateDoc();
   } catch (error) {
     docBody.innerHTML = `
